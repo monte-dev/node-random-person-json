@@ -16,6 +16,16 @@ function randChoice(arr) {
 	return arr[random];
 }
 
+function generatePhoneNumber() {
+	const countryCodes = ['+48 ', '+45 ', '+1 ', '+353 ', '+31 '];
+	const randomCountryCode = randChoice(countryCodes);
+
+	let phoneNumber = randomCountryCode;
+	for (let i = 0; i < 9; i++) {
+		phoneNumber += Math.floor(Math.random() * 10);
+	}
+	return phoneNumber;
+}
 const people = [];
 
 for (let i = 0; i < 20; i++) {
@@ -31,17 +41,21 @@ for (let i = 0; i < 20; i++) {
 	const lastName = lastNames[randomLastNameIndex];
 	const age = Math.floor(Math.random() * (78 - 18 + 1)) + 18;
 
+	const email = `${name.toLowerCase()}.${lastName.toLowerCase()}@gmail.com`;
+	const phoneNumber = generatePhoneNumber();
+
 	const person = {
 		gender: gender,
 		firstName: name,
 		lastName: lastName,
 		age: age,
+		email: email,
+		phoneNumber: phoneNumber,
 	};
 
 	people.push(person);
 }
-const peopleJSON = people.map((person) => JSON.stringify(person)).join(',\n');
-const formattedPeopleJSON = `[\n${peopleJSON}\n]`;
+const formattedPeopleJSON = JSON.stringify(people, null, 2);
 
 fs.writeFile('people.json', formattedPeopleJSON, (err) => {
 	if (err) {
